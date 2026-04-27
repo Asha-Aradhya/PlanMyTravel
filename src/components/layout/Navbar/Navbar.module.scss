@@ -78,6 +78,16 @@
   gap: $spacing-3;
 }
 
+.avatarLink {
+  display: flex;
+  border-radius: 50%;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
 .avatar {
   width: 32px;
   height: 32px;

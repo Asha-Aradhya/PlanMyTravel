@@ -78,7 +78,7 @@
 
 After every meaningful change to the app, update these two files:
 
-### `DEVELOPMENT.md`
+### `docs/DEVELOPMENT.md`
 Update when:
 - A new service, tool, or provider is added (e.g. NextAuth, a new API, a third-party library)
 - A new environment variable is introduced
@@ -88,7 +88,7 @@ Update when:
 
 What to add: what it is, why it was chosen, exact steps followed, relevant links.
 
-### `flow-diagram.html`
+### `docs/flow-diagram.html`
 Update when:
 - A new page or route is added
 - A new component is added to an existing page

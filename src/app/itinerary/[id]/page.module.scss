@@ -1,6 +1,12 @@
 @use '@/styles/variables' as *;
 @use '@/styles/mixins' as *;
 
+.page {
+  min-height: 100vh;
+  background: $color-cream;
+  padding-top: 72px;
+}
+
 .wrapper {
   max-width: 780px;
   margin: 0 auto;
@@ -11,9 +17,22 @@
   }
 }
 
+.backLink {
+  display: inline-block;
+  padding-top: $spacing-8;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  color: $color-text-muted;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $color-navy;
+  }
+}
+
 .tripHeader {
   text-align: center;
-  padding: $spacing-12 0 $spacing-10;
+  padding: $spacing-10 0;
   border-bottom: 1px solid rgba(201, 168, 76, 0.2);
   margin-bottom: $spacing-10;
 }
@@ -46,77 +65,24 @@
   color: $color-gold;
 }
 
-
 .actions {
   @include flex-center;
-  gap: $spacing-4;
   margin-top: $spacing-12;
   padding-top: $spacing-8;
   border-top: 1px solid rgba(201, 168, 76, 0.2);
-}
-
-.saveBtn {
-  padding: $spacing-3 $spacing-8;
-  background: $color-gold;
-  color: $color-navy-dark;
-  border: none;
-  border-radius: $radius-full;
-  font-size: $font-size-base;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease;
-
-  &:hover:not(:disabled) {
-    background: $color-gold-light;
-    transform: translateY(-1px);
-  }
-
-  &:disabled {
-    opacity: 0.75;
-    cursor: default;
-  }
 }
 
 .newPlanBtn {
   padding: $spacing-3 $spacing-8;
   background: $color-navy;
   color: $color-cream;
-  border: none;
   border-radius: $radius-full;
   font-size: $font-size-base;
   font-weight: 600;
-  cursor: pointer;
   transition: background 0.2s ease, transform 0.15s ease;
 
   &:hover {
     background: $color-navy-light;
     transform: translateY(-1px);
   }
-}
-
-.errorState {
-  @include flex-center;
-  flex-direction: column;
-  gap: $spacing-5;
-  padding: $spacing-16;
-  text-align: center;
-}
-
-.errorText {
-  font-size: $font-size-base;
-  color: $color-error;
-}
-
-.retryBtn {
-  padding: $spacing-3 $spacing-6;
-  background: $color-navy;
-  color: $color-cream;
-  border: none;
-  border-radius: $radius-full;
-  font-size: $font-size-sm;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-
-  &:hover { background: $color-navy-light; }
 }

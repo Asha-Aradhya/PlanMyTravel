@@ -453,7 +453,82 @@ Button shows "✓ Saved"
 
 ---
 
-## 12. Local Development Setup (for a new developer)
+## 12. Sign-in UX Improvements
+
+**Problems fixed:**
+1. After signing out, clicking Sign In again triggered a silent OAuth redirect — Google had a cached session and redirected back instantly with no visible UI. Users had no indication anything was happening.
+2. Between clicking Sign In and the Google page loading, the button appeared unresponsive (no visual feedback).
+
+**Fixes:**
+
+- **`prompt: 'select_account'`** added to the Google provider in `src/lib/auth.ts`. Forces Google to always show the account chooser, even when a valid Google session is cached. One-line change, applies globally to all sign-in flows.
+  ```ts
+  GoogleProvider({
+    ...,
+    authorization: { params: { prompt: 'select_account' } },
+  })
+  ```
+
+- **Loading state** on both sign-in surfaces:
+  - `NavbarAuth.tsx` — Sign In button shows "Signing in…" and is disabled while redirecting
+  - `SignInModal.tsx` — "Continue with Google" shows "Redirecting to Google…" and the Google logo hides while loading
+
+---
+
+## 13. Profile & Saved Itineraries
+
+**What:** A `/profile` page showing the user's avatar, name, email, and all saved itineraries. A `/itinerary/[id]` page for viewing a saved trip in full.
+
+**Files created:**
+
+- `src/app/profile/page.tsx` — Server component. Auth-guarded with `getServerSession()` (redirects to `/` if unauthenticated). Fetches all saved itineraries directly via Prisma (no API round-trip needed). Serialises `createdAt` Date objects to ISO strings before passing to the client component.
+
+- `src/components/profile/ProfileView/ProfileView.tsx` — Client component. Shows avatar with `onError` fallback to initials, name, email. Card grid of saved trips — each with destination, date range, traveller count, relative time, a View link, and a delete button. Sign Out button at the bottom.
+
+- `src/app/itinerary/[id]/page.tsx` — Server component. Auth + ownership check (`itinerary.userId !== session.user.id` → 404). Renders saved content via the shared `ItineraryContent` component with a "Back to Profile" link.
+
+- `src/app/api/itineraries/[id]/route.ts` — `DELETE /api/itineraries/[id]`. Verifies session and ownership, deletes from Neon DB. Returns 204.
+
+- `src/components/itinerary/ItineraryContent/ItineraryContent.tsx` — Extracted the `formatItinerary()` renderer out of `ItineraryDisplay` into a standalone component. Shared between the live generation page and the saved itinerary view. Accepts `text: string` and `isStreaming?: boolean`.
+
+**Files updated:**
+
+- `src/components/itinerary/ItineraryDisplay/ItineraryDisplay.tsx` — Now uses `<ItineraryContent>` instead of inline `formatItinerary()`.
+- `src/components/layout/Navbar/NavbarAuth.tsx` — Avatar is now a `<Link href="/profile">`. Added `imageError` state + `onError` on the `<Image>` — falls back to initials if Google's URL fails to load.
+
+---
+
+## 14. Auto-save After OAuth
+
+**Problem:** When an unauthenticated user clicked "Save Itinerary", the `SignInModal` appeared. After Google sign-in, NextAuth redirected back to `/itinerary`. But by then `travelPreferences` had been removed from `sessionStorage` (cleared after generation finishes), so the page redirected the user to `/plan/new` — losing the itinerary entirely.
+
+**Solution:** Persist the generated itinerary before the OAuth redirect, then restore and auto-save on return.
+
+**Flow:**
+```
+Click "Save Itinerary"  (not signed in)
+  ↓
+Store { preferences, itinerary } → sessionStorage key: 'pendingItinerarySave'
+  ↓
+SignInModal opens → "Continue with Google" → Google OAuth
+  ↓
+Return to /itinerary  (NextAuth default callbackUrl = current page)
+  ↓
+Mount useEffect detects 'pendingItinerarySave'
+→ Restore preferences + itinerary content into state
+→ Set status = 'done'  (skip re-generation entirely)
+→ Set autoSave = true
+  ↓
+Auto-save useEffect fires when session becomes authenticated
+→ POST /api/itineraries
+→ saveStatus = 'saved'  →  button shows "✓ Saved"
+```
+
+**Key detail:** `saveToDatabase` is wrapped in `useCallback` with empty deps (only uses the stable `setSaveStatus` setter). This lets it be a safe dependency in the auto-save `useEffect` without causing infinite re-renders.
+
+---
+
+## 15. Local Development Setup (for a new developer)
 
 ```bash
 # 1. Clone the repo

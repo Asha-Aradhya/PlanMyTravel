@@ -1,0 +1,253 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.wrapper {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 $spacing-6 $spacing-16;
+
+  @include md {
+    padding: 0 $spacing-8 $spacing-16;
+  }
+}
+
+.profileHeader {
+  @include flex-center;
+  gap: $spacing-6;
+  padding: $spacing-12 0 $spacing-10;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+  margin-bottom: $spacing-10;
+  justify-content: flex-start;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid rgba(201, 168, 76, 0.4);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatarFallback {
+  @include flex-center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid rgba(201, 168, 76, 0.4);
+  background: $color-navy;
+  color: $color-gold;
+  font-family: $font-serif;
+  font-size: $font-size-3xl;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+}
+
+.userName {
+  font-family: $font-serif;
+  font-size: $font-size-2xl;
+  color: $color-navy;
+  margin: 0;
+}
+
+.userEmail {
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+}
+
+.section {
+  margin-bottom: $spacing-12;
+}
+
+.sectionHeading {
+  @include flex-center;
+  justify-content: flex-start;
+  gap: $spacing-3;
+  font-family: $font-serif;
+  font-size: $font-size-xl;
+  color: $color-navy;
+  margin-bottom: $spacing-6;
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 $spacing-2;
+  background: $color-gold;
+  color: $color-navy-dark;
+  font-family: $font-sans;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  border-radius: $radius-full;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-4;
+  padding: 0;
+  margin: 0;
+
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  @include flex-between;
+  align-items: flex-start;
+  background: $color-white;
+  border: 1px solid $color-cream-dark;
+  border-radius: $radius-xl;
+  padding: $spacing-5 $spacing-5 $spacing-5 $spacing-6;
+  box-shadow: $shadow-sm;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  gap: $spacing-4;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    border-color: rgba(201, 168, 76, 0.3);
+  }
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+  min-width: 0;
+}
+
+.cardDestination {
+  font-family: $font-serif;
+  font-size: $font-size-lg;
+  color: $color-navy;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardDates {
+  font-size: $font-size-sm;
+  color: $color-text-dark;
+  margin: 0;
+}
+
+.cardMeta {
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+}
+
+.dot {
+  color: $color-gold;
+}
+
+.cardActions {
+  @include flex-center;
+  gap: $spacing-2;
+  flex-shrink: 0;
+}
+
+.viewBtn {
+  padding: $spacing-2 $spacing-4;
+  background: $color-navy;
+  color: $color-cream;
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: $color-navy-light;
+  }
+}
+
+.deleteBtn {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  color: $color-text-muted;
+  border: 1px solid $color-cream-dark;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+
+  &:hover:not(:disabled) {
+    color: $color-error;
+    border-color: $color-error;
+    background: rgba(239, 68, 68, 0.06);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.emptyState {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-5;
+  padding: $spacing-16;
+  text-align: center;
+  background: $color-white;
+  border: 1px dashed $color-cream-dark;
+  border-radius: $radius-xl;
+}
+
+.emptyText {
+  font-size: $font-size-base;
+  color: $color-text-muted;
+}
+
+.emptyCtaBtn {
+  padding: $spacing-3 $spacing-8;
+  background: $color-gold;
+  color: $color-navy-dark;
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.15s ease;
+
+  &:hover {
+    background: $color-gold-light;
+    transform: translateY(-1px);
+  }
+}
+
+.footer {
+  padding-top: $spacing-8;
+  border-top: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.signOutBtn {
+  padding: $spacing-3 $spacing-6;
+  background: transparent;
+  color: $color-text-muted;
+  border: 1px solid $color-cream-dark;
+  border-radius: $radius-full;
+  font-size: $font-size-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    color: $color-navy;
+    border-color: $color-navy;
+  }
+}

@@ -76,8 +76,13 @@
   width: 100%;
   justify-content: center;
 
-  &:hover {
+  &:hover:not(:disabled) {
     border-color: $color-gold;
     box-shadow: $shadow-gold;
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: default;
   }
 }
